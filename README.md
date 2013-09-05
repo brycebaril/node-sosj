@@ -7,7 +7,7 @@ Sequential Object Stream Joiner (SOSJ) -- Provides an `align` function that can 
 
 Combines two objectMode streams that are each **ALREADY ORDERED** by a sequence key and emits a new stream which is doublets of records for the two joined streams.
 
-You can then use other `Transform` streams to perform typical Set join operations.
+You can then use other `Transform` streams to perform typical Set join operations. Or you can use some that have already been created for you that wrap this library: [stream-joins](http://npm.im/stream-joins)
 
 ```javascript
 var align = require("sosj")
