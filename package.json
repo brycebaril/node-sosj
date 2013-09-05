@@ -1,0 +1,36 @@
+{
+  "name": "sosj",
+  "version": "0.0.0",
+  "description": "Sorted Object Stream Join -- Joins two sorted objectMode streams based on a provided join key.",
+  "main": "align.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "readable-stream": "~1.1.8",
+    "through2-map": "~1.1.0"
+  },
+  "devDependencies": {
+    "tape": "~1.1.0",
+    "stream-spigot": "~2.1.1",
+    "through2-spy": "~1.0.1"
+  },
+  "scripts": {
+    "test": "node test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:brycebaril/node-sosj.git"
+  },
+  "keywords": [
+    "streams",
+    "objectMode",
+    "sequence",
+    "join"
+  ],
+  "author": "Bryce B. Baril",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/brycebaril/node-sosj/issues"
+  }
+}
