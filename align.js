@@ -14,8 +14,8 @@ var map = require("through2-map")
  * @param  {Stream} rightStream An objectMode stream ordered by `key`
  * @return {Stream}             A doublet stream containing [leftRecord, rightRecord], [leftRecord, null], or [null, rightRecord]
  */
-function align(key, leftStream, rightStream) {
-  var aligner = new Aligner(key)
+function align(key, leftStream, rightStream, epsilon) {
+  var aligner = new Aligner(key, {}, epsilon)
 
   var l = left()
   var r = right()
@@ -48,10 +48,11 @@ function right(stream) {
   })
 }
 
-function Aligner(key, options) {
+function Aligner(key, options, epsilon) {
   if (!(this instanceof Aligner)) return new Aligner(key, options)
   if (!key) throw new Error("Aligner requires a sequence key")
   this.key = key
+  this.epsilon = epsilon
   // This MUST be an objectMode stream.
   options = options || {}
   options.objectMode = true
@@ -78,7 +79,7 @@ Aligner.prototype._transform = function (record, encoding, callback) {
 
   while (otherRecord = otherQueue.shift()) {
     other = otherRecord[o]
-    if (me[key] == other[key]) {
+    if (me[key] == other[key] || compareDelta(me[key], other[key], this.epsilon)) {
       // These keys are joined, w00t
       record[o] = other
       this.push(record)
@@ -110,4 +111,20 @@ Aligner.prototype._flush = function (callback) {
   })
 
   return callback()
+}
+function compareDelta(val1, val2, epsilon){
+    console.log("comparing", val1, val2, epsilon)
+    if(!epsilon) return false;
+    var compareDouble = function(e,a,d) {
+        return Math.abs(e - a) <= d;
+    }
+    if (val1 === val2) {
+        return true;
+    }
+
+    if (typeof val1 == "number" ||
+        typeof val2 == "number" ||
+        !val1 || !val2) {
+        return compareDouble(val1, val2, epsilon);
+    }
 }
