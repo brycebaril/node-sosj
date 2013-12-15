@@ -113,18 +113,17 @@ Aligner.prototype._flush = function (callback) {
   return callback()
 }
 function compareDelta(val1, val2, epsilon){
-    console.log("comparing", val1, val2, epsilon)
-    if(!epsilon) return false;
+    if(!epsilon) return false
     var compareDouble = function(e,a,d) {
-        return Math.abs(e - a) <= d;
+        return Math.abs(e - a) <= d
     }
     if (val1 === val2) {
-        return true;
+        return true
     }
 
     if (typeof val1 == "number" ||
         typeof val2 == "number" ||
         !val1 || !val2) {
-        return compareDouble(val1, val2, epsilon);
+        return compareDouble(val1, val2, epsilon)
     }
 }
