@@ -49,7 +49,7 @@ function right(stream) {
 }
 
 function Aligner(key, options, epsilon) {
-  if (!(this instanceof Aligner)) return new Aligner(key, options)
+  if (!(this instanceof Aligner)) return new Aligner(key, options, epsilon)
   if (!key) throw new Error("Aligner requires a sequence key")
   this.key = key
   this.epsilon = epsilon
@@ -113,17 +113,16 @@ Aligner.prototype._flush = function (callback) {
   return callback()
 }
 function compareDelta(val1, val2, epsilon){
-    if(!epsilon) return false
-    var compareDouble = function(e,a,d) {
-        return Math.abs(e - a) <= d
-    }
-    if (val1 === val2) {
-        return true
-    }
-
-    if (typeof val1 == "number" ||
-        typeof val2 == "number" ||
-        !val1 || !val2) {
-        return compareDouble(val1, val2, epsilon)
-    }
+  if(!epsilon) return false
+  var compareDouble = function(e,a,d) {
+    return Math.abs(e - a) <= d
+  }
+  if (val1 === val2) {
+      return true
+  }
+  if (typeof val1 == "number" ||
+    typeof val2 == "number" ||
+    !val1 || !val2) {
+      return compareDouble(val1, val2, epsilon)
+  }
 }
