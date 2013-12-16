@@ -7,6 +7,8 @@ Sequential Object Stream Joiner (SOSJ) -- Provides an `align` function that can 
 
 Combines two objectMode streams that are each **ALREADY ORDERED** by a sequence key and emits a new stream which is doublets of records for the two joined streams.
 
+If you wish to use floating points keys, then you must use the optional epsilon param, which follows the classical semantics for float-comparison.
+
 You can then use other `Transform` streams to perform typical Set join operations. Or you can use some that have already been created for you that wrap this library: [stream-joins](http://npm.im/stream-joins)
 
 ```javascript
@@ -45,10 +47,11 @@ align("v", left, right).pipe(spy({objectMode: true}, console.log))
 API
 ===
 
-`require("sosj")(sequenceKey, leftStream, rightStream)`
+`require("sosj")(sequenceKey, leftStream, rightStream, epsilon)`
 ---
 
 Align the two streams by sequenceKey into doublets of `[left, right]`, `[left, null]`, or `[null, right]` depending on if the records have matching sequenceKey values.
+If epsilon param is used, floating-number comparison semantics are triggered, i.e., keys will match if `Math.abs(key_left - key_right) <= epsilon`
 
 LICENSE
 =======
