@@ -15,6 +15,7 @@ var map = require("through2-map")
  * @return {Stream}             A doublet stream containing [leftRecord, rightRecord], [leftRecord, null], or [null, rightRecord]
  */
 function align(key, leftStream, rightStream, epsilon) {
+  // TODO probably need to add stream options support for thigns like high water mark
   var aligner = new Aligner(key, {}, epsilon)
 
   var l = left()
@@ -112,17 +113,18 @@ Aligner.prototype._flush = function (callback) {
 
   return callback()
 }
-function compareDelta(val1, val2, epsilon){
-  if(!epsilon) return false
-  var compareDouble = function(e,a,d) {
+
+function compareDelta(val1, val2, epsilon) {
+  if (!epsilon) return false
+  var compareDouble = function(e, a, d) {
     return Math.abs(e - a) <= d
   }
   if (val1 === val2) {
-      return true
+    return true
   }
   if (typeof val1 == "number" ||
-    typeof val2 == "number" ||
-    !val1 || !val2) {
-      return compareDouble(val1, val2, epsilon)
+      typeof val2 == "number" ||
+      !val1 || !val2) {
+    return compareDouble(val1, val2, epsilon)
   }
 }
