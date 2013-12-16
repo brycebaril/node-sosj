@@ -80,36 +80,36 @@ test("align new key", function (t) {
 })
 
 test("align float keys", function (t) {
-    t.plan(6)
+  t.plan(6)
 
-    var left = spigot({objectMode: true}, [
-        {v: 0.11, foo: 100},
-        {v: 1.11, foo: 200},
-        {v: 2.11, foo: 300},
-        {v: 3.11, foo: 400},
-        {v: 4.11, foo: 500},
-    ])
+  var left = spigot({objectMode: true}, [
+    {v: 0.11, foo: 100},
+    {v: 1.11, foo: 200},
+    {v: 2.11, foo: 300},
+    {v: 3.11, foo: 400},
+    {v: 4.11, foo: 500},
+  ])
 
-    var right = spigot({objectMode: true}, [
-        {v: 0.12, bar: 100},
-        {v: 2.12, bar: 200},
-        {v: 4.12, bar: 300},
-        {v: 8.12, bar: 400},
-    ])
+  var right = spigot({objectMode: true}, [
+    {v: 0.12, bar: 100},
+    {v: 2.12, bar: 200},
+    {v: 4.12, bar: 300},
+    {v: 8.12, bar: 400},
+  ])
 
-    var expected = [
-        [ { v: 0.11, foo: 100 }, { v: 0.12, bar: 100 } ],
-        [ { v: 1.11, foo: 200 }, null ],
-        [ { v: 2.11, foo: 300 }, { v: 2.12, bar: 200 } ],
-        [ { v: 3.11, foo: 400 }, null ],
-        [ { v: 4.11, foo: 500 }, {v: 4.12, bar: 300} ],
-        [ null, { v: 8.12, bar: 400 } ],
-    ]
+  var expected = [
+    [ { v: 0.11, foo: 100 }, { v: 0.12, bar: 100 } ],
+    [ { v: 1.11, foo: 200 }, null ],
+    [ { v: 2.11, foo: 300 }, { v: 2.12, bar: 200 } ],
+    [ { v: 3.11, foo: 400 }, null ],
+    [ { v: 4.11, foo: 500 }, {v: 4.12, bar: 300} ],
+    [ null, { v: 8.12, bar: 400 } ],
+  ]
 
-    function check(r) {
-        t.deepEquals(r, expected.shift(), "Expected record emitted")
-    }
+  function check(r) {
+    t.deepEquals(r, expected.shift(), "Expected record emitted")
+  }
 
-    align("v", left, right, 0.011)
-        .pipe(spy({objectMode: true}, check))
+  align("v", left, right, 0.011)
+    .pipe(spy({objectMode: true}, check))
 })
