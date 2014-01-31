@@ -1,6 +1,6 @@
 {
   "name": "sosj",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Sorted Object Stream Join -- Joins two sorted objectMode streams based on a provided join key.",
   "main": "align.js",
   "directories": {
