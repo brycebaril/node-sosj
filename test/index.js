@@ -113,3 +113,44 @@ test("align float keys", function (t) {
   align("v", left, right, 0.011)
     .pipe(spy({objectMode: true}, check))
 })
+
+test("align date keys", function (t) {
+  t.plan(5)
+
+  var now = Date.now()
+  var dates = [
+    new Date(now - 86400000),
+    new Date(now - 86000000),
+    new Date(now - 6400000),
+    new Date(now),
+    new Date(now + 1000),
+  ]
+
+  var left = spigot({objectMode: true}, [
+    {v: dates[0], foo: 100},
+    {v: dates[2], foo: 200},
+    {v: dates[3], foo: 300},
+    {v: dates[4], foo: 400},
+  ])
+
+  var right = spigot({objectMode: true}, [
+    {v: dates[0], bar: 100},
+    {v: dates[1], bar: 200},
+    {v: dates[4], bar: 300},
+  ])
+
+  var expected = [
+    [ { v: dates[0], foo: 100 }, { v: dates[0], bar: 100 } ],
+    [ null, { v: dates[1], bar: 200 } ],
+    [ { v: dates[2], foo: 200 }, null ],
+    [ { v: dates[3], foo: 300 }, null ],
+    [ { v: dates[4], foo: 400 }, { v: dates[4], bar: 300 } ],
+  ]
+
+  function check(r) {
+    t.deepEquals(r, expected.shift(), "Expected record emitted")
+  }
+
+  align("v", left, right)
+    .pipe(spy({objectMode: true}, check))
+})
