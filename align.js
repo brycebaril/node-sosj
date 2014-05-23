@@ -85,6 +85,14 @@ Aligner.prototype._transform = function (record, encoding, callback) {
       this.push(record)
       return callback()
     }
+    else if (me[key] instanceof Date){
+      if (me[key].valueOf() == other[key].valueOf()){
+        // These keys are joined, w00t
+        record[o] = other
+        this.push(record)
+        return callback()
+      }
+    }
     else if (me[key] < other[key]) {
       // This record pre-dates all seen records on the other's queue
       otherQueue.unshift(otherRecord)
